@@ -132,3 +132,64 @@ persistent game state were added.
 - Verified all 300 generated boards were not solved after scrambling, so each
   board had a valid legal path from the solved arrangement and was solvable in
   principle.
+
+## Entry 3 — 2026-10-15
+
+### Prompt
+
+> Implement Task 2 of my Lab 4 Sliding Puzzle assignment: Complete Puzzle Lifecycle.
+>
+> Inspect the current code and README.md. Build on the existing implementation and the completed Task 1.
+>
+> Requirements:
+>
+> 1. Detect when the board reaches the solved arrangement.
+> 2. Display a clear completion message.
+> 3. End the game loop cleanly after completion.
+> 4. Prevent further moves after the game has been completed.
+> 5. Preserve the existing board representation and movement controls.
+> 6. Handle quitting and invalid commands safely.
+> 7. Do not implement Tasks 3 or 4 yet.
+> 8. Do not add unnecessary dependencies or persistence.
+> Explain every change and test the solved-board condition, normal gameplay, quitting, and behavior after completion.
+>
+> Append the exact Task 2 prompt, response, changed files, and test results to chat-history.md. Preserve all earlier entries.
+> and commit
+> git commit -m "Task 2: Complete puzzle lifecycle" with this name in that same lab 4 folder
+>
+> [Tagged file: c:\Users\dhriti\Downloads\22_sliding_puzzle\puzzle.py (71 lines)]
+
+### Response
+
+Task 2 was implemented without changing Tasks 1, 3, or 4.
+
+`SlidingPuzzle` now has an explicit `completed` state. The game loop runs only
+while that state is false. When `puzzle.solved()` detects the solved
+arrangement, the controller sets `completed` to true, prints `Solved!`, and
+breaks cleanly. A completed game cannot be run again to accept additional
+commands or change the board. Existing `q` handling and invalid-command
+feedback remain safe and unchanged.
+
+The existing board representation and `w/a/s/d` movement controls were
+preserved. No dependencies, persistence, or size-mode work was added.
+
+### Files changed
+
+- `game.py` — added explicit completion state and completion-loop handling.
+- `chat-history.md` — appended this Task 2 record.
+- No changes were made to `puzzle.py`, `main.py`, `README.md`, or
+  `requirements.txt`.
+
+### Tests performed
+
+- Re-read `README.md` and inspected the current `game.py` and `puzzle.py`.
+- Compiled `game.py` and `puzzle.py` successfully with Python 3.12.10.
+- Tested an already-solved board and verified `Solved!` is displayed without
+  requesting another command.
+- Tested normal gameplay by applying one legal move to a board one move from
+  completion; verified the board became solved, the move count became 1, and
+  the completion message was displayed.
+- Tested an invalid command followed by `q`; verified safe feedback, no move
+  count increase, and clean quitting.
+- Tested running a completed game a second time; verified no input was
+  accepted and the board remained unchanged.

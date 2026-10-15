@@ -8,6 +8,7 @@ class SlidingPuzzle:
         self.puzzle = Puzzle(self.size)
         self.moves = 0
         self.started = time.monotonic()
+        self.completed = False
 
     def display(self):
         print()
@@ -17,11 +18,12 @@ class SlidingPuzzle:
 
     def run(self):
         print("Sliding Puzzle — W/A/S/D moves the tile into the blank. Q quits.")
-        while True:
+        while not self.completed:
             self.display()
             if self.puzzle.solved():
+                self.completed = True
                 print("Solved!")
-                return
+                break
             key = input("> ").strip().lower()
             if key == "q":
                 return
