@@ -58,6 +58,8 @@ class Puzzle:
                     return r, c
 
     def move(self, direction):
+        if direction not in "wasd":
+            return False
         r, c = self.blank_pos()
         dr, dc = {"w": (-1, 0), "s": (1, 0), "a": (0, -1), "d": (0, 1)}[direction]
         nr, nc = r + dr, c + dc

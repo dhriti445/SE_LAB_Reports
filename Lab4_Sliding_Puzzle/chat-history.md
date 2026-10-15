@@ -268,3 +268,72 @@ handling remain in place.
 - Tested elapsed-time display with a controlled monotonic clock, confirming
   that elapsed time is calculated from one session start timestamp and is not
   reset by move tracking.
+
+## Entry 5 — 2026-10-15
+
+### Prompt
+
+> Implement Task 4 of my Lab 4 Sliding Puzzle assignment: Valid-Action Feedback.
+>
+> Inspect the README.md and the existing implementation. Build on Tasks 1, 2, and 3 without removing any completed functionality.
+>
+> Requirements:
+>
+> 1. A move is successful only when a legal adjacent tile slides into the blank.
+> 2. Increment the move counter only after a successful move.
+> 3. Invalid boundary moves must leave the board unchanged.
+> 4. Invalid moves must not increment the move counter or display success feedback.
+> 5. Invalid commands must be handled safely.
+> 6. Keep the existing controls and support 3x3, 4x4, and 5x5 boards.
+> 7. Ensure the timer and solved-state behavior continue to work.
+> 8. Avoid unnecessary dependencies, persistence, and unrelated changes.
+> Explain the changes and test legal moves, impossible boundary moves, invalid commands, move counts, and solved-state behavior.
+>
+> Append the exact Task 4 prompt, response, changed files, and test results to chat-history.md, preserving the earlier entries.
+> git status
+> git add main.py game.py puzzle.py chat-history.md
+> git commit -m "Task 4 : Fix invalid move feedback"
+> do this same way
+>
+> [Tagged file: c:\Users\dhriti\Downloads\22_sliding_puzzle\puzzle.py (71 lines)]
+
+### Response
+
+Task 4 was implemented while preserving Tasks 1, 2, and 3.
+
+`Puzzle.move()` now safely returns `False` for directions outside the
+existing `w/a/s/d` controls instead of raising `KeyError`. The game continues
+to reject invalid interactive commands safely.
+
+`SlidingPuzzle.run()` now prints `Tile moved.` and increments the move counter
+only when `Puzzle.move()` returns `True`. Boundary moves return `False`, leave
+the board unchanged, do not increment the counter, and print only
+`That move is not possible.` Timer and solved-state behavior remain unchanged.
+
+No dependencies, persistence, or unrelated features were added.
+
+### Files changed
+
+- `game.py` — added success feedback only after a legal move.
+- `puzzle.py` — made invalid direct directions return `False` safely.
+- `chat-history.md` — appended this Task 4 record.
+- `main.py` — included in the Lab 4 sync command; no content change was
+  required.
+
+### Tests performed
+
+- Re-read `README.md` and inspected the current `game.py` and `puzzle.py`.
+- Compiled `game.py` and `puzzle.py` successfully with Python 3.12.10.
+- Tested legal moves, invalid directions, and boundary moves for 3x3, 4x4,
+  and 5x5 boards.
+- Verified legal moves change the board and return `True`.
+- Verified invalid directions and impossible boundary moves return `False` and
+  leave the board unchanged.
+- Verified a legal move increments the move counter exactly once and displays
+  `Tile moved.`.
+- Verified boundary moves and invalid commands do not increment the move
+  counter and do not display success feedback.
+- Verified a legal final move still produces `Solved!` and sets the completed
+  state.
+- The first test harness run exposed an incorrect assertion in the harness
+  itself; the expectation was corrected and the complete suite then passed.

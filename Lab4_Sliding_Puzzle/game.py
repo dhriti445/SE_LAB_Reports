@@ -56,5 +56,6 @@ class SlidingPuzzle:
                 continue
             if self.puzzle.move(key):
                 self.moves += 1
+                print("Tile moved.")
             else:
                 print("That move is not possible.")
