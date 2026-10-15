@@ -193,3 +193,78 @@ preserved. No dependencies, persistence, or size-mode work was added.
   count increase, and clean quitting.
 - Tested running a completed game a second time; verified no input was
   accepted and the board remained unchanged.
+
+## Entry 4 — 2026-10-15
+
+### Prompt
+
+> Implement Task 3 of my Lab 4 Sliding Puzzle assignment: Board Sizes, Timer, and Move Tracking.
+>
+> Inspect README.md and the existing code. Build on Tasks 1 and 2 without undoing their functionality.
+>
+> Requirements:
+>
+> 1. Allow the player to choose a 3x3, 4x4, or 5x5 board.
+> 2. Ensure board creation, the solved condition, and legal moves work for every supported size.
+> 3. Track the number of successful moves correctly.
+> 4. Track elapsed time consistently.
+> 5. Do not accidentally reset elapsed time or move counts when only recreating a board, unless the user explicitly starts a new game and that behavior is documented.
+> 6. Validate the board-size selection and handle invalid input safely.
+> 7. Preserve the existing project structure and avoid unnecessary dependencies or persistence.
+> 8. Do not implement unrelated features.
+> Explain the changes and test all three sizes, move counts, timer behavior, and board recreation.
+>
+> Append the exact Task 3 prompt, response, changed files, and test results to chat-history.md without removing earlier entries.
+> git status
+> git add main.py game.py puzzle.py chat-history.md
+> git commit -m "Task 3: Add board size and tracking modes"
+> same way as above do this
+>
+> [Tagged file: c:\Users\dhriti\Downloads\22_sliding_puzzle\puzzle.py (71 lines)]
+
+### Response
+
+Task 3 was implemented while preserving Tasks 1 and 2.
+
+`SlidingPuzzle` now supports the 3x3, 4x4, and 5x5 board sizes through
+`SUPPORTED_SIZES`. The game asks the player to choose a size when `run()` is
+called without an explicit size, repeatedly rejecting non-numeric and
+unsupported selections with clear feedback. An explicit `run(size)` remains
+available for controlled use and testing.
+
+The new `start_new_game(size)` method is the only intentional session reset
+path. It validates the requested size, creates the board, resets the move
+count and completion state, and starts a fresh monotonic timer. Selecting a
+size through the interactive prompt is explicitly treated as starting a new
+game, including when the selected size is the same as the current size.
+Ordinary moves do not reset the timer or move count. The existing board
+representation, solved check, legal movement controls, and completion
+handling remain in place.
+
+### Files changed
+
+- `game.py` — added supported board-size selection, validation, explicit
+  new-game reset behavior, and size-aware session setup.
+- `chat-history.md` — appended this Task 3 record.
+- No changes were needed in `main.py`, `puzzle.py`, `README.md`, or
+  `requirements.txt`; Task 1 puzzle generation and Task 2 lifecycle behavior
+  remain intact.
+
+### Tests performed
+
+- Re-read `README.md` and inspected `main.py`, `game.py`, and `puzzle.py`.
+- Compiled `game.py` and `puzzle.py` successfully with Python 3.12.10.
+- Created and validated 3x3, 4x4, and 5x5 boards, including dimensions,
+  complete tile sets, and solved-board recognition.
+- Tested a normal solving move and verified the successful move count became
+  exactly 1.
+- Tested invalid size inputs (`two` and `6`) and verified safe feedback before
+  accepting `3`.
+- Tested explicit `start_new_game(5)` and verified that the documented,
+  intentional new-game reset sets moves to zero, restarts the timer, and
+  clears completion.
+- Tested interactive selection of the same size and verified it intentionally
+  starts a fresh game and resets tracking.
+- Tested elapsed-time display with a controlled monotonic clock, confirming
+  that elapsed time is calculated from one session start timestamp and is not
+  reset by move tracking.
